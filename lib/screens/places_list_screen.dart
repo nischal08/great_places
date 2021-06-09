@@ -11,14 +11,6 @@ class PlacesListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Places'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, AddPlaceScreen.routeName);
-            },
-            icon: Icon(Icons.add),
-          ),
-        ],
       ),
       body: Consumer<GreatPlaces>(
         child: Center(
@@ -40,6 +32,16 @@ class PlacesListScreen extends StatelessWidget {
                   ),
                 ),
               ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).primaryColor,
+        ),
+        backgroundColor: Theme.of(context).primaryColorLight,
+        onPressed: () {
+          Navigator.pushNamed(context, AddPlaceScreen.routeName);
+        },
       ),
     );
   }
