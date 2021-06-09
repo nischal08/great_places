@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:great_places/providers/great_places.dart';
 import 'package:great_places/widgets/image_input.dart';
+import 'package:great_places/widgets/location_input.dart';
 import 'package:provider/provider.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -40,21 +41,22 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SingleChildScrollView(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _titleTextController,
-                      decoration: InputDecoration(labelText: "Title"),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ImageInput(onSelectImage: _selectImage)
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _titleTextController,
+                    decoration: InputDecoration(labelText: "Title"),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ImageInput(onSelectImage: _selectImage),
+                  SizedBox(
+                    height: 10,
+                  ),LocationInput()
+                ],
               ),
             ),
           ),

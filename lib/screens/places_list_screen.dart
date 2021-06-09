@@ -12,25 +12,36 @@ class PlacesListScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Your Places'),
       ),
-      body: Consumer<GreatPlaces>(
-        child: Center(
-          child: const Text("Got no places yet, start adding some!"),
-        ),
-        builder: (context, greatPlaces, ch) => greatPlaces.items.length <= 0
-            ? ch!
-            : ListView.builder(
-                itemCount: greatPlaces.items.length,
-                itemBuilder: (context, index) => ListTile(
-                  onTap: () {
-                    //go to detail page
-                  },
-                  leading: CircleAvatar(
-                    backgroundImage: FileImage(greatPlaces.items[index].image),
-                  ),
-                  title: Text(
-                    greatPlaces.items[index].title,
-                  ),
+      body: FutureBuilder(
+        future: Provider.of<GreatPlaces>(context, listen: false)
+            .fetchAndSetPlaces(),
+        builder: (context, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<GreatPlaces>(
+                child: Center(
+                  child: const Text("Got no places yet, start adding some!"),
                 ),
+                builder: (context, greatPlaces, ch) =>
+                    greatPlaces.items.length <= 0
+                        ? ch!
+                        : ListView.builder(
+                            itemCount: greatPlaces.items.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                //go to detail page
+                              },
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    FileImage(greatPlaces.items[index].image),
+                              ),
+                              title: Text(
+                                greatPlaces.items[index].title,
+                              ),
+                            ),
+                          ),
               ),
       ),
       floatingActionButton: FloatingActionButton(
