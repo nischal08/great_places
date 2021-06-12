@@ -5,7 +5,9 @@ import 'package:great_places/screens/map_screen.dart';
 import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({Key? key}) : super(key: key);
+  final Function onSelectPlace;
+  const LocationInput({Key? key, required this.onSelectPlace})
+      : super(key: key);
 
   @override
   _LocationInputState createState() => _LocationInputState();
@@ -14,18 +16,31 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
 
-  Future<void> _getCurrentUserLocation() async {
-    final locData = await Location().getLocation();
+  void _showPreview(double lat, double lng) {
     final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
-        longitude: locData.longitude!, latitude: locData.latitude!);
+        longitude: lng, latitude: lat);
     setState(() {
       _previewImageUrl = staticMapImageUrl;
     });
   }
 
+  Future<void> _getCurrentUserLocation() async {
+    try {
+      final locData = await Location().getLocation();
+      _showPreview(locData.longitude!, locData.latitude!);
+      widget.onSelectPlace(
+        locData.latitude,
+        locData.longitude,
+      );
+    } catch (e) {
+      return;
+    }
+  }
+
   Future<void> _selectMap() async {
     final selectedLocation = await Navigator.of(context).push<LatLng>(
       MaterialPageRoute(
+        fullscreenDialog: true,
         builder: (context) => MapScreen(
           isSelecting: true,
         ),
@@ -35,12 +50,12 @@ class _LocationInputState extends State<LocationInput> {
     if (selectedLocation == null) {
       return;
     }
-    print("Location input !!!!");
-    print(selectedLocation.latitude);
-    print(selectedLocation.longitude);
-    print("Location input !!!!");
+    _showPreview(selectedLocation.latitude, selectedLocation.longitude);
 
-    ///..
+    widget.onSelectPlace(
+      selectedLocation.latitude,
+      selectedLocation.longitude,
+    );
   }
 
   @override
