@@ -31,7 +31,8 @@ class PlacesListScreen extends StatelessWidget {
                             itemCount: greatPlaces.items.length,
                             itemBuilder: (context, index) => ListTile(
                               onTap: () {
-                                //go to detail page
+                                Navigator.pushNamed(context, '/place-detail',
+                                    arguments: greatPlaces.items[index].id);
                               },
                               leading: CircleAvatar(
                                 backgroundImage:

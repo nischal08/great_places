@@ -19,6 +19,7 @@ class _LocationInputState extends State<LocationInput> {
   void _showPreview(double lat, double lng) {
     final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
         longitude: lng, latitude: lat);
+    print(staticMapImageUrl);
     setState(() {
       _previewImageUrl = staticMapImageUrl;
     });
@@ -103,8 +104,8 @@ class _LocationInputState extends State<LocationInput> {
                 ),
               ),
               onPressed: _selectMap,
-              icon: Icon(Icons.map),
-              label: Text(
+              icon:const Icon(Icons.map),
+              label: const Text(
                 "Select on Map",
               ),
             ),
